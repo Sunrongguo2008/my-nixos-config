@@ -1,0 +1,171 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+ipv6: true
+external-controller: 0.0.0.0:9090
+secret: "srg123456"
+
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - any:53 # 劫持所有 DNS 请求
+  auto-route: true
+  auto-detect-interface: true
+
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+
+proxy-providers:
+  subcome:
+    url: "https://jsl.subcome.com/sub?token=afe4272bd3dfb6b89f4b2f9b16b94900&uuid=fc4472ab-2bb8-4023-9408-0248d6cd0268"
+    type: http
+    interval: 3600
+    path: ./providers/subcome.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+    # 添加跳过证书验证（如果订阅链接有证书问题）
+    override:
+      skip-cert-verify: true
+
+proxy-groups:
+  - name: "节点选择"
+    type: select
+    use:
+      - subcome
+    proxies:
+      - DIRECT
+
+  - name: "自动选择"
+    type: url-test
+    use:
+      - subcome
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "全球直连"
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+
+  - name: "全球代理"
+    type: select
+    use:
+      - subcome
+    proxies:
+      - 节点选择
+      - DIRECT
+
+  - name: "广告拦截"
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+
+  - name: "电报消息"
+    type: select
+    use:
+      - subcome
+    proxies:
+      - 节点选择
+
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
+
+  private:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+
+  direct:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+
+  gfw:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt"
+    path: ./ruleset/telegramcidr.yaml
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+rules:
+  # 1. 局域网 IP 段直连
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
+
+  # 2. Google 相关域名强制走代理（解决 HSTS 问题）
+  - DOMAIN-SUFFIX,google.com,全球代理
+  - DOMAIN-SUFFIX,googleapis.com,全球代理
+  - DOMAIN-SUFFIX,gstatic.com,全球代理
+  - DOMAIN-SUFFIX,googleusercontent.com,全球代理
+
+  # 3. 使用 rule-provider 的规则集
+  - RULE-SET,private,全球直连
+  - RULE-SET,reject,广告拦截
+  - RULE-SET,telegramcidr,电报消息
+  - RULE-SET,direct,全球直连
+  - RULE-SET,proxy,全球代理
+  - RULE-SET,gfw,全球代理
+
+  # 4. 国内 IP 段直连
+  - RULE-SET,cncidr,全球直连
+  - RULE-SET,lancidr,全球直连
+
+  # 5. 最终兜底
+  - MATCH,全球代理
