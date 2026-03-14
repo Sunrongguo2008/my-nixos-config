@@ -8,4 +8,4 @@ Welcome to my NixOS configuration repository! This repository contains my person
 
 Feel free to explore the configuration files, modify them, or use them as references for your own NixOS setup.
 
-您可以随意浏览配置文件、修改它们，或者将它们用作您自己的 NixOS 设置的参考。
+你可以随意浏览配置文件、修改它们，或者将它们用作您自己的 NixOS 设置的参考。
