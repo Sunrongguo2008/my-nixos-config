@@ -83,7 +83,6 @@ in
     adw-gtk3
     libsForQt5.qt5ct
     kdePackages.qt6ct
-    copyq
 
     obsidian
     ayugram-desktop

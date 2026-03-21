@@ -104,10 +104,8 @@ in
     appimage-run                  # AppImage 运行工具
 
     # 网络和代理工具
-    clash-verge-rev               # Clash 代理前端
     nh                            # Nix 构建输出优化工具
     xhost                         # X11 访问控制
-    v2raya                        # V2Ray 图形界面客户端
     mihomo                        # TUN 模式的代理工具
 
     # 字体和图标
