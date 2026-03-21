@@ -318,7 +318,6 @@ window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     match app-id=r#"zen$"# title="^Picture-in-Picture$"
     match app-id="Rofi"
-    match app-id="copyq"
     open-floating true
 }
 
@@ -373,7 +372,6 @@ binds {
     Mod+E hotkey-overlay-title="文件管理: Nautilus" { spawn "nautilus"; }
     Super+Alt+L hotkey-overlay-title="锁屏: quickshell" { spawn-sh "qs -c dms ipc call lock lock"; }
     Mod+B hotkey-overlay-title="浏览器: Zen" { spawn-sh "flatpak run --branch=stable --arch=x86_64 --command=launch-script.sh --file-forwarding app.zen_browser.zen"; }
-    Mod+V hotkey-overlay-title="剪贴板管理: copyq" { spawn-sh "copyq show"; }
     // 使用 spawn-sh 运行 shell 命令。如果您需要管道、多个命令等，请执行此操作。
     // 注意：整个命令作为单个参数传递。它会被逐字传递给 `sh -c`。
     // 例如，这是一个切换屏幕阅读器 (orca) 的标准绑定。
