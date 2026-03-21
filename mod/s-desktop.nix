@@ -34,6 +34,7 @@
 
     # Wayland 相关设置（提示 Electron 应用使用 Wayland）
     NIXOS_OZONE_WL = "1";
+    LIBVA_DRIVER_NAME = "iHD";
 
     # Qt 应用的输入法模块设置
     QT_IM_MODULE = "fcitx";
@@ -41,6 +42,12 @@
     # Qt5 使用 qt5ct，Qt6/KDE 应用使用 qt6ct（含 Dolphin）。
     QT_QPA_PLATFORMTHEME = "qt5ct";
     QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
+  };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [ intel-media-driver ];
   };
 
   # XDG 门户配置（提供安全的 Wayland 服务访问）

@@ -48,6 +48,15 @@
     dates = "weekly"; # 每周运行一次
     options = "--delete-older-than 7d"; # 删除 7 天前的包
   };
+  services.fstrim = {
+    enable = true;
+    interval = "monthly";
+  };
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+    fileSystems = [ "/" ];
+  };
   # 自动优化 Nix 存储（去重）
   nix.settings.auto-optimise-store = true;
   nix.optimise.automatic = true;
