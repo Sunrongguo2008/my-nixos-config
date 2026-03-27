@@ -1,0 +1,6 @@
+zmodule environment
+zmodule input
+zmodule git
+zmodule z-shell/F-Sy-H
+zmodule zsh-users/zsh-history-substring-search --name history-substring-search -s zsh-history-substring-search.zsh
+zmodule zsh-users/zsh-autosuggestions --name autosuggestions -s zsh-autosuggestions.zsh

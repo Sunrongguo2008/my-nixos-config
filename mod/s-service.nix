@@ -17,6 +17,7 @@
       "video"      # 视频设备访问权限
       "greeter"    # 登录管理器权限组
     ];
+    shell = pkgs.zsh;
     packages = with pkgs; [ tree ];  # 为用户安装的额外包
   };
   # 将用户 s 添加到 docker 组（另一种方式）

@@ -1,0 +1,83 @@
+if [[ -r "$HOME/.local/bin/env" ]]; then
+  . "$HOME/.local/bin/env"
+fi
+
+export ZDOTDIR="${ZDOTDIR:-$HOME}"
+export ZIM_HOME="${ZDOTDIR}/.zim"
+export ZIM_CONFIG_FILE="${ZDOTDIR}/.zimrc"
+export HISTFILE="${ZDOTDIR}/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
+
+setopt AUTO_CD
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_FCNTL_LOCK
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt INTERACTIVE_COMMENTS
+
+if [[ -r /etc/zinputrc ]]; then
+  . /etc/zinputrc
+fi
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' menu select
+
+if [[ -o interactive ]] && (( ${+commands[fastfetch]} )); then
+  fastfetch
+fi
+
+if [[ -r "$HOME/.local/share/zimfw/zimfw.zsh" && ( ! -r "${ZIM_HOME}/init.zsh" || "${ZIM_HOME}/init.zsh" -ot "${ZIM_CONFIG_FILE}" ) ]]; then
+  source "$HOME/.local/share/zimfw/zimfw.zsh" init -q
+fi
+
+if [[ -r "${ZIM_HOME}/init.zsh" ]]; then
+  source "${ZIM_HOME}/init.zsh"
+fi
+
+if ! (( ${+_comps} )); then
+  autoload -Uz compinit
+  compinit -C -d "${ZDOTDIR}/.zcompdump"
+fi
+
+if (( ${+widgets[history-substring-search-up]} && ${+widgets[history-substring-search-down]} )); then
+  if [[ -n "${terminfo[kcuu1]-}" ]]; then
+    bindkey "${terminfo[kcuu1]}" history-substring-search-up
+  fi
+  if [[ -n "${terminfo[kcud1]-}" ]]; then
+    bindkey "${terminfo[kcud1]}" history-substring-search-down
+  fi
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
+
+b() {
+  builtin cd /etc/nixos || return
+  nh os switch "$PWD"
+}
+
+u() {
+  builtin cd /etc/nixos || return
+  sudo nix flake update
+  nh os switch "$PWD"
+}
+
+push() {
+  builtin cd "$HOME/文档/my-blog" || return
+  git add .
+  git commit -m 更新文章
+  git push -u origin main
+}
+
+web() {
+  builtin cd "$HOME/文档/my-blog" || return
+  hugo serve -D
+}
+
+if (( ${+commands[starship]} )); then
+  eval "$(starship init zsh)"
+fi
