@@ -262,7 +262,6 @@ layout {
 //spawn-at-startup "waybar"
 
 // 要运行 shell 命令（带变量、管道等），请使用 spawn-sh-at-startup：
-// spawn-sh-at-startup "dms run"
 
 hotkey-overlay {
     // 取消注释此行以禁用启动时的“重要热键”弹出窗口。
@@ -367,11 +366,13 @@ binds {
 
     // 建议绑定运行程序：终端、应用程序启动器、屏幕锁定器。
     Mod+RETURN hotkey-overlay-title="终端: kitty" { spawn "kitty"; }
-    Mod+D hotkey-overlay-title="启动器: quickshell" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
-    Mod+Alt+I hotkey-overlay-title="settings" { spawn-sh "qs -c dms ipc call settings toggle"; }
     Mod+E hotkey-overlay-title="文件管理: Nautilus" { spawn "nautilus"; }
-    Super+Alt+L hotkey-overlay-title="锁屏: quickshell" { spawn-sh "qs -c dms ipc call lock lock"; }
     Mod+B hotkey-overlay-title="浏览器: Zen" { spawn-sh "flatpak run --branch=stable --arch=x86_64 --command=launch-script.sh --file-forwarding app.zen_browser.zen"; }
+
+    Mod+D { spawn-sh "noctalia-shell ipc call launcher toggle"; }
+    Mod+S { spawn-sh "noctalia-shell ipc call controlCenter toggle"; }
+    //Mod+Comma { spawn-sh "noctalia-shell ipc call settings toggle"; }
+
     // 使用 spawn-sh 运行 shell 命令。如果您需要管道、多个命令等，请执行此操作。
     // 注意：整个命令作为单个参数传递。它会被逐字传递给 `sh -c`。
     // 例如，这是一个切换屏幕阅读器 (orca) 的标准绑定。
@@ -381,13 +382,12 @@ binds {
     // allow-when-locked=true 属性使它们即使在会话锁定时也能工作。
     // 使用 spawn-sh 允许将多个参数与命令一起传递。
     //XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "dms ipc call audio increment 3"; }
     //XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "dms ipc call audio decrement 3"; }
     //XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "dms ipc call audio mute"; }
     //XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "dms ipc call audio micmute"; }
+    XF86AudioRaiseVolume { spawn "noctalia-shell" "ipc" "call" "volume" "increase"; }
+    XF86AudioLowerVolume { spawn "noctalia-shell" "ipc" "call" "volume" "decrease"; }
+    XF86AudioMute { spawn "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
 
     // brightnessctl 的亮度键映射示例。
     // 您也可以使用常规 spawn 与多个参数（通过 "sh" 避免），
@@ -638,11 +638,6 @@ debug {
 
 }
 
-include "dms/colors.kdl"
-include "dms/layout.kdl"
-include "dms/alttab.kdl"
-include "dms/binds.kdl"
-
 window-rule {
     match app-id=r#"^org\.gnome\."#
     draw-border-with-background false
@@ -669,15 +664,9 @@ window-rule {
     clip-to-geometry true
 }
 
-// Open DMS windows as floating by default
-window-rule {
-    match app-id=r#"org.quickshell$"#
-    open-floating true
-}
 
 
-include "dms/cursor.kdl"
 
-include "dms/outputs.kdl"
 
-include "dms/windowrules.kdl"
+include "./noctalia.kdl"
+

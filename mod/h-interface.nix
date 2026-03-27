@@ -32,7 +32,7 @@
     gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
   };
 
-  # [适配DMS] 监听系统深浅色并同步 GTK3 主题，确保 Nemo 等 GTK3 应用跟随切换。
+  #[适配DMS/noctalia] 监听系统深浅色并同步 GTK3 主题，确保 Nemo 等 GTK3 应用跟随切换。
   systemd.user.services.gtk3-theme-sync = {
     Unit = {
       Description = "Sync GTK3 theme with color-scheme";

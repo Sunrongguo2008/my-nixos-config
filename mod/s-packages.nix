@@ -54,7 +54,7 @@ in
 {
   # DMS-Shell 配置（动态管理系统 Shell）
   programs.dms-shell = {
-    enable = true;
+    enable = false;
     package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
     systemd = {
       enable = true; # 启用 systemd 服务
