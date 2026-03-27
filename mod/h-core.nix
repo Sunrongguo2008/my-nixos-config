@@ -86,4 +86,10 @@ in
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/fastfetch.jsonc";
   };
+
+  home.file.".config/mango" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/mango";
+  };
+
 }
