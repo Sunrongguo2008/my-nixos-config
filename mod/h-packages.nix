@@ -4,7 +4,7 @@
 
 let
   qqWithX11 = pkgs.qq.overrideAttrs (old: {
-    buildInputs = (old.buildInputs or []) ++ [ pkgs.makeWrapper ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.makeWrapper ];
     postFixup = (old.postFixup or "") + ''
       wrapProgram $out/bin/qq \
         --set XMODIFIERS "@im=fcitx" \
@@ -12,7 +12,7 @@ let
         --add-flags "--enable-features=UseOzonePlatform --ozone-platform=x11"
     '';
   });
-  
+
 in
 {
   # 通过 home.packages 安装一些常用的软件
@@ -20,7 +20,6 @@ in
   # 建议将所有 GUI 软件，以及与 OS 关系不大的 CLI 软件，都通过 home.packages 安装
   home.packages = with pkgs; [
     # 如下是我常用的一些命令行工具，你可以根据自己的需要进行增删
-    fastfetch # 装B
     yazi # 终端文件管理
 
     # 压缩工具
@@ -67,7 +66,6 @@ in
     pciutils # lspci
     usbutils # lsusb
 
-    
     # niri
     libnotify
     nwg-look
@@ -76,7 +74,7 @@ in
     code-nautilus
     nautilus-open-any-terminal
     gnome-keyring
-    #quickshell 已经在dms中配置了qs-flake
+    #quickshell 已经在 dms 中配置了 qs-flake
     matugen
     wl-clipboard
     cliphist
@@ -120,13 +118,16 @@ in
     loupe # 图片查看器
     adwaita-qt
     adwaita-qt6
-    nil #用于vscode的nix语法纠错
-    nixd #用于vscode的nix语法纠错
+    nil # 用于 vscode 的 nix 语法纠错
+    nixd # 用于 vscode 的 nix 语法纠错
     protonplus # Steam Proton 版本管理工具
     lutris # 游戏管理器
     nixfmt
 
-    #虚拟化
+    # 虚拟化
     virtualbox
+
+    starship
+    zimfw # 提供 zimfw.zsh 脚本本体
   ];
 }

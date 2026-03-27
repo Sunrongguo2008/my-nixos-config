@@ -1,0 +1,6 @@
+setopt no_global_rcs
+skip_global_compinit=1
+
+if [[ -r "$HOME/.local/bin/env" ]]; then
+  . "$HOME/.local/bin/env"
+fi
