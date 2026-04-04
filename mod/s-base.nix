@@ -78,8 +78,10 @@
     "https://mirrors.ustc.edu.cn/nix-channels/store?priority=5" # 中科大镜像
     "https://cache.nixos.org/" # 官方源
     "https://attic.xuyh0120.win/lantian" # CachyOS 内核缓存
+    "https://noctalia.cachix.org" # Noctalia 包缓存
   ];
   nix.settings.trusted-public-keys = [
     "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" # CachyOS 内核公钥
+    "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" # Noctalia 包公钥
   ];
 }
