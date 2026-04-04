@@ -1,6 +1,6 @@
 # Home 核心配置模块
 # 包含用户信息、Shell、服务与配置文件链接
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   conf-dir = "${config.home.homeDirectory}/nixos/conf";
@@ -17,6 +17,19 @@ in
   home.sessionVariables = {
     TERMINAL = "kitty"; # 设置默认终端
   };
+
+    # 将 fish 作为 shell，但不把 fish 作为登录 shell 以防止问题
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+      then
+        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+      fi
+    '';
+  };
+
   # Polkit GNOME 服务（用于 Niri 等桌面环境）
   services.polkit-gnome.enable = true;
 
@@ -70,6 +83,12 @@ in
   home.file.".local/share/zimfw/zimfw.zsh" = {
     source = "${pkgs.zimfw}/zimfw.zsh";
   };
+
+  home.file.".config/fish/config.fish" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/fish.fish";
+  };
+
 
   home.file.".config/starship.toml" = {
     force = true;

@@ -76,12 +76,15 @@ in
   # Mango WM 使用优化构建
   programs.mango.package = mangoOptimized;
 
+  programs.fish.enable = true;  # 启用 Fish Shell
+
   # 启用 zsh，补全交给 zim 管理，避免重复 compinit
   programs.zsh = {
     enable = true;
     enableCompletion = false;
   };
-
+  
+  programs.starship.enable = true; # 启用 Starship Shell Prompt
   # DSearch 配置（快速搜索工具）
   programs.dsearch = {
     enable = true;
