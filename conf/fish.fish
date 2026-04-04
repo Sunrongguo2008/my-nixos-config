@@ -36,3 +36,5 @@ function web
     cd ./文档/my-blog/
     hugo serve -D
 end
+
+starship init fish | source
