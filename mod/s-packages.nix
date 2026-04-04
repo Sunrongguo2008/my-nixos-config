@@ -10,8 +10,7 @@
 }:
 
 let
-  # 仅对 quickshell 启用激进优化：clang + O3 + native + ThinLTO
-  quickshellBase = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
+
 
   # 共享的高性能编译 Stdenv（clang + LLD + O3 + ThinLTO）
   fastOptimizedStdenv =
@@ -34,6 +33,8 @@ let
       NIX_CFLAGS_LINK = "-flto=thin -fuse-ld=lld";
     } thinLtoTuned;
 
+  # quickshell：在构建时尽可能优化运行速度
+  quickshellBase = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
   quickshellOptimized = quickshellBase.override {
     stdenv = fastOptimizedStdenv;
   };
