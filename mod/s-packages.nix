@@ -77,6 +77,9 @@ in
   programs.mango.package = mangoOptimized;
 
   programs.fish.enable = true;  # 启用 Fish Shell
+  programs.fish.interactiveShellInit = ''
+    ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+  '';
 
   # 启用 zsh，补全交给 zim 管理，避免重复 compinit
   programs.zsh = {
