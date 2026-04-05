@@ -34,6 +34,7 @@ in
     yq-go # YAML 处理工具 https://github.com/mikefarah/yq
     lsd # 现代化的 'ls' 替代品
     fzf # 命令行模糊查找工具
+    zoxide # 目录跳转工具，类似 autojump/z.lua
 
     # 网络工具
     aria2 # 轻量级多协议和多源命令行下载工具
