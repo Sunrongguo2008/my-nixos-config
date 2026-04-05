@@ -220,11 +220,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775247674,
-        "narHash": "sha256-MCaiC3iWarAsmu8KJXgJHb1H8lf+BD9gymvxkbmNVdc=",
+        "lastModified": 1775268934,
+        "narHash": "sha256-Sa5tW5kYPJornQEkFVD43F/0d4/WP+/GLTNktTFe2qU=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "03bdcf84f092956943dcf9ef164481e463512716",
+        "rev": "9dc93220c1c9a410ef6277d6dc55c571d9e592d0",
         "type": "github"
       },
       "original": {
@@ -309,11 +309,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1775165818,
-        "narHash": "sha256-Bkb1ha9bB8IiWIBW2Z6shj2Erqx08VH1I9ljYl8zxGU=",
+        "lastModified": 1775307976,
+        "narHash": "sha256-s7tT69WTAX8CdZg1Gr1L4n2W/IgyPCfFXJFllXS5A5g=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "f25473b21b45ab8ded4a0dbba69eb6b6660d568e",
+        "rev": "13fec3de9b40dbd075ce0ec5c88ef86117e25443",
         "type": "github"
       },
       "original": {
@@ -850,11 +850,11 @@
         "noctalia-qs": "noctalia-qs"
       },
       "locked": {
-        "lastModified": 1775210433,
-        "narHash": "sha256-tkue0Ed0CufUXjEBb51ojtyWY1ibK9h3ed+mVDHFGZA=",
+        "lastModified": 1775309721,
+        "narHash": "sha256-yZIMJhv1Jg2I1bsag/chncl4nb/5pkrEKVwpkOqJqpI=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "759454d2d5bce9be7dea982818700140335ed047",
+        "rev": "819b2d33b04b2180b6ef19dab7f86af7d3603a52",
         "type": "github"
       },
       "original": {
@@ -938,11 +938,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775201427,
-        "narHash": "sha256-yTjyHtMpJiB9fAcPAtvROn5tFAwSqCTnfG7w+LtmpMM=",
+        "lastModified": 1775293582,
+        "narHash": "sha256-Ay3gu/FsbKkubA/76xgqYhdNZwUsgo1tPdBLsFwgt94=",
         "ref": "refs/heads/master",
-        "rev": "50cdf9886803c0279aafa43d0b590abdc34f5766",
-        "revCount": 786,
+        "rev": "854088c48c4020f35019851137197b1112a9b9ee",
+        "revCount": 790,
         "type": "git",
         "url": "https://git.outfoxxed.me/quickshell/quickshell"
       },
