@@ -37,4 +37,20 @@ function web
     hugo serve -D
 end
 
+function ls
+    lsd --group-directories-first
+end
+
+function ll
+    lsd --group-directories-first -l
+end
+
+function la
+    lsd --group-directories-first -a
+end
+
+function lt
+    lsd --group-directories-first --tree
+end
+
 starship init fish | source

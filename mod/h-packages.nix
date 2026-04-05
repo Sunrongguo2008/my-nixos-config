@@ -32,7 +32,7 @@ in
     ripgrep # 递归搜索目录中的正则表达式模式
     jq # 轻量级灵活的命令行 JSON 处理器
     yq-go # YAML 处理工具 https://github.com/mikefarah/yq
-    eza # 现代化的 'ls' 替代品
+    lsd # 现代化的 'ls' 替代品
     fzf # 命令行模糊查找工具
 
     # 网络工具
