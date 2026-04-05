@@ -14,7 +14,7 @@
     enable = true;
     waylandCompositors = {
       mango = {
-        prettyName = "Mango(UWSM)";
+        prettyName = "Mango";
         comment = "Mango compositor managed by UWSM";
         binPath = "/run/current-system/sw/bin/mango"; 
       };
