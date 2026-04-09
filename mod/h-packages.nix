@@ -123,7 +123,8 @@ in
     nixd # 用于 vscode 的 nix 语法纠错
     protonplus # Steam Proton 版本管理工具
     lutris # 游戏管理器
-    nixfmt
+    nixfmt # Nix 代码格式化工具
+    copyq # 剪贴板历史工具
 
     # 虚拟化
     virtualbox
