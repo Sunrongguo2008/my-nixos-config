@@ -72,6 +72,9 @@
   # 系统状态版本（用于兼容性）
   system.stateVersion = "25.05";
 
+  # 自动备份配置文件（home-manager）
+  home-manager.backupFileExtension = "bak";
+
   # Nix 二进制缓存配置（国内镜像加速）
   nix.settings.substituters = [
     "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=10" # 清华大学镜像
