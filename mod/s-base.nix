@@ -73,7 +73,29 @@
   system.stateVersion = "25.05";
 
   # 自动备份配置文件（home-manager）
-  home-manager.backupFileExtension = "bak";
+  # 使用带时间戳的同目录备份，避免固定 .bak 文件反复冲突。
+  home-manager.backupCommand = pkgs.writeShellScript "home-manager-backup" ''
+    set -eu
+
+    target_path="$1"
+    dir_path="''${target_path%/*}"
+    base_name="''${target_path##*/}"
+
+    if [[ "$dir_path" == "$target_path" ]]; then
+      dir_path="."
+    fi
+
+    timestamp="$(${pkgs.coreutils}/bin/date +%Y%m%d-%H%M%S)"
+    backup_path="$dir_path/$base_name.bak.$timestamp"
+    suffix=0
+
+    while [[ -e "$backup_path" ]]; do
+      suffix=$((suffix + 1))
+      backup_path="$dir_path/$base_name.bak.$timestamp.$suffix"
+    done
+
+    exec ${pkgs.coreutils}/bin/mv "$target_path" "$backup_path"
+  '';
 
   # Nix 二进制缓存配置（国内镜像加速）
   nix.settings.substituters = [
