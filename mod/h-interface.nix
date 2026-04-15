@@ -19,6 +19,7 @@
       package = pkgs.adw-gtk3;
       name = "adw-gtk3";
     };
+    gtk4.theme = config.gtk.theme;
     iconTheme = {
       package = pkgs.papirus-icon-theme;
       name = "Papirus";
