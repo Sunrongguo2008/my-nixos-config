@@ -1,0 +1,38 @@
+{
+    "editor.formatOnSave": true,
+    "files.autoSave": "afterDelay",
+    "window.autoDetectColorScheme": true,
+    "editor.mouseWheelZoom": true,
+    "editor.fontSize": 16,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "roo-cline.debug": false,
+    "roo-cline.allowedCommands": [
+        "git log",
+        "git diff",
+        "git show"
+    ],
+    "roo-cline.deniedCommands": [],
+    "chatgpt.localeOverride": "zh-CN",
+    "nix.enableLanguageServer": true,
+    "nix.formatterPath": "nixfmt",
+    "claudeCode.preferredLocation": "panel",
+    "git.autofetch": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": true,
+        "scminput": false
+    },
+    "git.confirmSync": false,
+    "workbench.preferredDarkColorTheme": "NoctaliaTheme",
+    "workbench.preferredLightColorTheme": "NoctaliaTheme",
+    "editor.formatOnPaste": true,
+    "editor.wordWrap": "on",
+    "workbench.settings.applyToAllProfiles": [
+        "editor.wordWrap"
+    ],
+    "editor.fontFamily": "'Maple Mono NF CN', 'Consolas', 'Monaco', monospace",
+    "window.newWindowProfile": "默认"
+}
