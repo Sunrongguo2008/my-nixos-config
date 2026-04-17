@@ -16,7 +16,8 @@
   ];
 
   # 使用 CachyOS 内核（性能优化版）
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v4; # 12代不能用，直到nova lake发布后才再支持AVX-512才有v4，机器迁移的时候要注意
+  #boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # GRUB 引导加载器配置
