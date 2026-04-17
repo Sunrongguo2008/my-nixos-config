@@ -76,15 +76,18 @@ in
   };
 
   home.file.".zimrc" = {
+    force = true;
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/zimrc";
   };
 
   home.file.".local/share/zimfw/zimfw.zsh" = {
+    force = true;
     source = "${pkgs.zimfw}/zimfw.zsh";
   };
 
   home.file.".config/fish/config.fish" = {
+    force = true;
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/fish.fish";
   };
@@ -97,18 +100,26 @@ in
   };
 
   home.file.".config/niri/config.kdl" = {
+    force = true;
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/niri.kdl";
   };
 
     home.file.".config/fastfetch/config.jsonc" = {
+    force = true;
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/fastfetch.jsonc";
   };
 
   home.file.".config/mango" = {
+    force = true;
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/mango";
   };
 
+    home.file.".config/Code/User/settings.json" = {
+    force = true;
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/vscode.json";
+};
 }
