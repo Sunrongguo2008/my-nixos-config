@@ -149,13 +149,16 @@ rules:
   - IP-CIDR,192.168.0.0/16,DIRECT
   - IP-CIDR,10.0.0.0/8,DIRECT
 
-  # 2. Google 相关域名强制走代理（解决 HSTS 问题）
+  # 2. 指定域名直连
+  - DOMAIN,mirrors.ustc.edu.cn,DIRECT
+
+  # 3. Google 相关域名强制走代理（解决 HSTS 问题）
   - DOMAIN-SUFFIX,google.com,全球代理
   - DOMAIN-SUFFIX,googleapis.com,全球代理
   - DOMAIN-SUFFIX,gstatic.com,全球代理
   - DOMAIN-SUFFIX,googleusercontent.com,全球代理
 
-  # 3. 使用 rule-provider 的规则集
+  # 4. 使用 rule-provider 的规则集
   - RULE-SET,private,全球直连
   - RULE-SET,reject,广告拦截
   - RULE-SET,telegramcidr,电报消息
@@ -163,9 +166,9 @@ rules:
   - RULE-SET,proxy,全球代理
   - RULE-SET,gfw,全球代理
 
-  # 4. 国内 IP 段直连
+  # 5. 国内 IP 段直连
   - RULE-SET,cncidr,全球直连
   - RULE-SET,lancidr,全球直连
 
-  # 5. 最终兜底
+  # 6. 最终兜底
   - MATCH,全球代理
