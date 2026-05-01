@@ -151,7 +151,7 @@ layout {
         // off
 
         // 环从窗口向外延伸的逻辑像素数。
-        width 4
+        width 3
 
         // 颜色可以通过多种方式设置：
         // - CSS 命名颜色："red"
@@ -164,7 +164,7 @@ layout {
         // 非活跃监视器上环的颜色。
         //
         // 焦点环仅在活跃窗口周围绘制，因此您唯一能看到其非活跃颜色的地方是在其他监视器上。
-        inactive-color "#505050"
+        ////inactive-color "#505050"
 
         // 您也可以使用渐变。它们优先于纯色。
         // 渐变的渲染方式与 CSS linear-gradient(angle, from, to) 相同。
@@ -177,14 +177,14 @@ layout {
 
         // 渐变可以使用几种不同的插值颜色空间。
         // 例如，这是一个通过 in="oklch longer hue" 实现的粉彩彩虹渐变。
-         active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
+         //active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
 
 
         // 您也可以相对于整个工作区视图着色渐变，
         // 而不是相对于窗口本身。
         // 为此，请设置 relative-to="workspace-view"。
         //
-        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+        //// inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
     // 您也可以添加边框。它与焦点环类似，但始终可见。
@@ -260,7 +260,7 @@ layout {
 
 // 此行启动 waybar，这是 Wayland 合成器常用的栏。
 //spawn-at-startup "waybar"
-
+spawn-at-startup "noctalia-shell"
 // 要运行 shell 命令（带变量、管道等），请使用 spawn-sh-at-startup：
 
 hotkey-overlay {
@@ -295,6 +295,18 @@ animations {
     
 }
 
+overview {
+    zoom 0.5
+}
+
+blur {
+    // off
+    passes 2
+    offset 8
+    noise 0.02
+    saturation 1.5
+}
+
 // 窗口规则允许您为单个窗口调整行为。
 // 在 wiki 上查找更多信息：
 // https://yalter.github.io/niri/Configuration  :-Window-Rules
@@ -322,13 +334,13 @@ window-rule {
 
 window-rule {
     match is-active=true
-    opacity 0.98
+    opacity 1.0
 }
 
 // Make inactive windows semitransparent.
 window-rule {
     match is-active=false
-    opacity 0.9
+    opacity 0.8
 }
 
 
@@ -347,8 +359,21 @@ window-rule {
 // 示例：为所有窗口启用圆角。
 // （此示例规则在前面用 "/-" 注释掉了。）
 window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 8
     clip-to-geometry true
+    background-effect {
+        blur true
+    }
+}
+
+
+layer-rule {
+    match layer="top"
+    match layer="overlay"
+
+    background-effect {
+        xray false
+    }
 }
 
 
@@ -639,29 +664,12 @@ debug {
 }
 
 window-rule {
-    match app-id=r#"^org\.gnome\."#
-    draw-border-with-background false
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-
-window-rule {
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
     match app-id="Alacritty"
     match app-id="zen"
     match app-id="com.mitchellh.ghostty"
     match app-id="kitty"
     draw-border-with-background false
-}
-
-window-rule {
-    match is-active=false
-    opacity 0.9
-}
-
-window-rule {
-    geometry-corner-radius 12
-    clip-to-geometry true
 }
 
 
