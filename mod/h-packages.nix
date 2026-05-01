@@ -131,5 +131,7 @@ in
 
     starship
     zimfw # 提供 zimfw.zsh 脚本本体
+
+    cherry-studio
   ];
 }
