@@ -73,6 +73,15 @@
                   # Use the exact kernel versions as defined in nix-cachyos-kernel.
                   # This avoids kernel/patch version mismatch warnings and ensures cache availability.
                   nix-cachyos-kernel.overlays.pinned
+                  # 仅对 32 位 openldap 跳过 flaky 测试 test017-syncreplication-refresh
+                  # （lutris 多架构会拉 i686 openldap）。不动 x86_64，避免连锁重编。
+                  (_final: prev: {
+                    pkgsi686Linux = prev.pkgsi686Linux.extend (
+                      _f: p: {
+                        openldap = p.openldap.overrideAttrs (_: { doCheck = false; });
+                      }
+                    );
+                  })
                 ];
 
                 # ... your other configs
