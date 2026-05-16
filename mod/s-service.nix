@@ -125,4 +125,10 @@
 
   # GVFS（GNOME 虚拟文件系统）- 用于文件管理器访问特殊位置
   services.gvfs.enable = true;
+
+  services.hermes-agent = {
+    enable = true;
+    addToSystemPackages = true;
+    configFile = ../conf/hermes-agent.yaml;
+  };
 }

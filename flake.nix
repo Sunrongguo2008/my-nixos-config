@@ -36,6 +36,7 @@
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hermes-agent.url = "github:NousResearch/hermes-agent";
   };
   outputs =
     inputs@{
@@ -46,6 +47,7 @@
       hyprland,
       nix-cachyos-kernel,
       mangowm,
+      hermes-agent,
       ...
     }:
     {
@@ -57,6 +59,7 @@
           modules = [
             ./configuration.nix
             mangowm.nixosModules.mango
+            hermes-agent.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
