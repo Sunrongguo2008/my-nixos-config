@@ -122,4 +122,16 @@ in
     source = config.lib.file.mkOutOfStoreSymlink
       "${conf-dir}/vscode.json";
 };
+
+    home.file.".hermes/config.yaml" = {
+    force = true;
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/hermes-agent.yaml";
+    };
+
+    home.file.".hermes/.env" = {
+    force = true;
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/hermes-agent.env";
+    };
 }

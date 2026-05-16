@@ -129,6 +129,17 @@
   services.hermes-agent = {
     enable = true;
     addToSystemPackages = true;
-    configFile = ../conf/hermes-agent.yaml;
+
+    # 跑成普通用户 s，HOME=/home/s ⇒ HERMES_HOME=/home/s/.hermes
+    # 直接命中 home-manager 软链好的 ~/.hermes/config.yaml → conf/hermes-agent.yaml
+    user             = "s";
+    group            = "users";
+    createUser       = false;
+    stateDir         = "/home/s";
+    workingDirectory = "/home/s";
+
+    # 故意不设 settings / configFile / environmentFiles：
+    # 让模块走默认，从 $HERMES_HOME/config.yaml 读（那是 mkOutOfStoreSymlink）
+    # hermes 启动时自己 load_hermes_dotenv() 读 ~/.hermes/.env（也是软链）
   };
 }
