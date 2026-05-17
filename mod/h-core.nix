@@ -123,6 +123,20 @@ in
       "${conf-dir}/vscode.json";
 };
 
+  # kitty 终端配置（默认终端，TERMINAL=kitty）
+  home.file.".config/kitty/kitty.conf" = {
+    force = true;
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/kitty.conf";
+  };
+
+  # git 用户配置（user/email + gh credential helper）
+  home.file.".gitconfig" = {
+    force = true;
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/gitconfig";
+  };
+
     home.file.".hermes/config.yaml" = {
     force = true;
     source = config.lib.file.mkOutOfStoreSymlink

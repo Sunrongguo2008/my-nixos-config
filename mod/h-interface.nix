@@ -2,6 +2,9 @@
 # 包含光标、GTK、Qt、VSCode 等图形界面相关配置
 { config, lib, pkgs, ... }:
 
+let
+  conf-dir = "${config.home.homeDirectory}/nixos/conf";
+in
 {
   # 鼠标光标配置
   home.pointerCursor = {
@@ -147,10 +150,9 @@
   '';
 
   # KDE 应用（如 Dolphin）优先读取 kdeglobals 的图标主题配置。
-  xdg.configFile."kdeglobals".text = ''
-    [Icons]
-    Theme=Papirus
-  '';
+  # 软链回 conf/kdeglobals，便于直接编辑生效。
+  xdg.configFile."kdeglobals".source = config.lib.file.mkOutOfStoreSymlink
+    "${conf-dir}/kdeglobals";
 
   # VSCode 配置
   programs.vscode = {
@@ -166,17 +168,10 @@
     });
   };
 
-  # MIME 应用配置
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "text/html" = "app.zen_browser.zen.desktop";
-      "x-scheme-handler/http" = "app.zen_browser.zen.desktop";
-      "x-scheme-handler/https" = "app.zen_browser.zen.desktop";
-      "x-scheme-handler/about" = "app.zen_browser.zen.desktop";
-      "x-scheme-handler/unknown" = "app.zen_browser.zen.desktop";
-    };
-  };
+  # MIME 应用配置（软链回 conf/mimeapps.list，便于直接编辑生效）
+  # 注意：放弃了 xdg.mimeApps 的声明式合并能力，换取改文件即生效。
+  xdg.configFile."mimeapps.list".source = config.lib.file.mkOutOfStoreSymlink
+    "${conf-dir}/mimeapps.list";
 
   # 桌面条目配置
   xdg.desktopEntries.nvim = {

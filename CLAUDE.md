@@ -54,11 +54,12 @@ nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
 
 ### 配置文件软链机制（重要）
 
-`conf/` 目录下的文件（`niri.kdl`、`starship.toml`、`fish.fish`、`hermes-agent.yaml`、`mihomo.yaml` 等）通过 `mkOutOfStoreSymlink` 链接到 `~/.config/...`。这意味着：
+`conf/` 目录下的文件（`niri.kdl`、`starship.toml`、`fish.fish`、`kitty.conf`、`gitconfig`、`kdeglobals`、`mimeapps.list`、`hermes-agent.yaml`、`mihomo.yaml` 等）通过 `mkOutOfStoreSymlink` 链接到 `~/.config/...`（`gitconfig` 链到 `~/.gitconfig`）。这意味着：
 
 - **直接编辑 `conf/` 中的文件会立刻生效**，无需 `nixos-rebuild`。
 - 但 `mihomo.yaml` 例外：它通过 `environment.etc."mihomo/config.yaml".source` 引用，是系统层 store 路径，**改完必须 rebuild**。
 - `conf/mango/` 目录被 `home.file` 整目录链接；`h-core.nix` 中的 `mango-reload-config` systemd path 监听该目录变化并自动 reload。
+- `kdeglobals` 与 `mimeapps.list` 在 `h-interface.nix` 中改用 `xdg.configFile.<name>.source = mkOutOfStoreSymlink ...`；这放弃了 `xdg.mimeApps` 声明式合并能力，换取改文件即生效。
 
 ### Flake inputs 注意点
 

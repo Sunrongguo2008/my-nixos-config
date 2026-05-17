@@ -1,0 +1,23 @@
+[user]
+	name = Sunrongguo2008
+	email = sunong@aliyun.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/run/current-system/sw/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/run/current-system/sw/bin/gh auth git-credential
+[cola]
+	startupmode = folder
+[commit]
+	gpgSign = false
+[pull]
+	rebase = false
+[gui]
+	pruneduringfetch = true
+[smartgit "submodule"]
+	fetchalways = false
+	update = true
+	initializenew = true
+[push]
+	recurseSubmodules = check
