@@ -57,7 +57,7 @@ nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
 `conf/` 目录下的文件（`niri.kdl`、`starship.toml`、`fish.fish`、`kitty.conf`、`gitconfig`、`kdeglobals`、`mimeapps.list`、`hermes-agent.yaml`、`mihomo.yaml` 等）通过 `mkOutOfStoreSymlink` 链接到 `~/.config/...`（`gitconfig` 链到 `~/.gitconfig`）。这意味着：
 
 - **直接编辑 `conf/` 中的文件会立刻生效**，无需 `nixos-rebuild`。
-- 但 `mihomo.yaml` 例外：它通过 `environment.etc."mihomo/config.yaml".source` 引用，是系统层 store 路径，**改完必须 rebuild**。
+- 但 `mihomo.yaml` 例外：它通过 `environment.etc."mihomo/config.yaml".source` 引用，是系统层 store 路径，**改完必须 rebuild + `sudo systemctl restart mihomo.service`**。rebuild 只换 store path 下的源文件，但 mihomo unit 定义本身没变 → systemd 不会自动重启它；且 mihomo 用 `LoadCredential=` 在启动时把 config 内容快照进 `/run/credentials/mihomo.service/`，不重启就吃不到新内容。
 - `conf/mango/` 目录被 `home.file` 整目录链接；`h-core.nix` 中的 `mango-reload-config` systemd path 监听该目录变化并自动 reload。
 - `kdeglobals` 与 `mimeapps.list` 在 `h-interface.nix` 中改用 `xdg.configFile.<name>.source = mkOutOfStoreSymlink ...`；这放弃了 `xdg.mimeApps` 声明式合并能力，换取改文件即生效。
 
@@ -67,7 +67,7 @@ nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
 - `nix-cachyos-kernel.overlays.pinned` 用于钉死内核版本，避免 patch 不匹配；当前实际使用 `linuxPackages_zen`（s-base.nix 中切换）。
 - 对 `pkgsi686Linux.openldap` 关闭了 `doCheck`，因为 Lutris 多架构会拉 i686 openldap 触发 flaky 测试 `test017-syncreplication-refresh`；改动隔离在 i686，不影响 x86_64 缓存命中。
 - `hermes-agent` 模块通过 `~/.hermes/config.yaml` 和 `~/.hermes/.env` 软链运行，**不要**在 `services.hermes-agent.settings` / `configFile` / `environmentFiles` 里设值，会破坏默认加载路径。
-- `hermes-agent.env` 与 `conf/mango/noctalia.conf` 在 `.gitignore` 中（含密钥/本机派生内容）。
+- `hermes-agent.env`、`hermes-agent.yaml` 与 `conf/mango/noctalia.conf` 在 `.gitignore` 中（密钥/本机派生内容）。`hermes-agent.yaml` 之所以 untrack：hermes 启动时会原地把 `auth.json` 里的 API key 写进 `custom_providers[*].api_key`，通过 mkOutOfStoreSymlink 直接落到这个文件——如果 tracked 会随 `git commit -a` 把密钥推到 origin（已经发生过一次事故）。
 
 ## 编辑约定
 
