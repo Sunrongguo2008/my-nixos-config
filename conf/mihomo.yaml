@@ -5,7 +5,7 @@ mode: rule
 log-level: info
 ipv6: true
 external-controller: 0.0.0.0:9090
-secret: "***REDACTED***"
+secret: "CIBEH5sy1T5iXu7VUyOK1lNDv4r2W27X"
 
 tun:
   enable: true
