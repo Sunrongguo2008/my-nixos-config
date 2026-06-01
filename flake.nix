@@ -42,7 +42,6 @@
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hermes-agent.url = "github:NousResearch/hermes-agent";
   };
   outputs =
     inputs@{
@@ -51,7 +50,6 @@
       home-manager,
       nix-cachyos-kernel,
       mangowm,
-      hermes-agent,
       ...
     }:
     {
