@@ -2,24 +2,30 @@
   description = "My Home Manager configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # 添加稳定版本
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     matugen = {
       url = "github:/InioX/Matugen";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
+    hexecute = {
+      url = "github:ThatOtherAndrew/Hexecute";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    hexecute.url = "github:ThatOtherAndrew/Hexecute";
-    nix-wpsoffice-cn.url = "github:Beriholic/nix-wpsoffice-cn";
-    nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+    nix-wpsoffice-cn = {
+      url = "github:Beriholic/nix-wpsoffice-cn";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-grub-themes = {
+      url = "github:jeslie0/nixos-grub-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,8 +49,6 @@
       self,
       nixpkgs,
       home-manager,
-      hyprland-plugins,
-      hyprland,
       nix-cachyos-kernel,
       mangowm,
       hermes-agent,
@@ -59,7 +63,6 @@
           modules = [
             ./configuration.nix
             mangowm.nixosModules.mango
-            hermes-agent.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
