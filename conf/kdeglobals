@@ -153,7 +153,7 @@ Show hidden files=false
 Sort by=Date
 Sort directories first=true
 Sort hidden files last=false
-Sort reversed=false
+Sort reversed=true
 Speedbar Width=102
 View Style=DetailTree
 
