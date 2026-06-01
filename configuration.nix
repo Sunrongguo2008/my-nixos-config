@@ -1,5 +1,5 @@
 # 编辑此配置文件以定义应安装在您系统上的内容。帮助信息可在 configuration.nix(5) 手册页、https://search.nixos.org/options 以及 NixOS 手册 (`nixos-help`) 中找到。
-{ config, lib, pkgs, inputs, pkgs-stable, ... }:
+{ config, lib, pkgs, inputs, ... }:
 # <- 这个函数签名是必需的
 
 {
@@ -18,6 +18,9 @@
 
     # 程序和包配置
     ./mod/s-packages.nix
+
+    # kmscon（仅 tty5 / tty6）
+    ./mod/s-kmscon.nix
   ];
 
   # 请注意：所有配置项已分离到各自的模块文件中
