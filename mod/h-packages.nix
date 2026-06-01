@@ -133,5 +133,9 @@ in
     zimfw # 提供 zimfw.zsh 脚本本体
 
     cherry-studio
+
+    # AI 编程
+    claude-code
+    opencode
   ];
 }
