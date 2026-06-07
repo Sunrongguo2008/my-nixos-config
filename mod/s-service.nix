@@ -86,6 +86,8 @@
     localNetworkGameTransfers.openFirewall = true; # 局域网游戏传输
   };
 
+  services.reframe.enable = true;  # 启用 Reframe（远程桌面工具）
+
   # Linyaps（Linux 应用商店）
   services.linyaps.enable = true;
 
