@@ -73,13 +73,16 @@
     settings = {
       default_session = {
         # 使用 tuigreet 作为登录界面
-        command = ''
-          ${pkgs.tuigreet}/bin/tuigreet \
-            --time \
-            --remember \
-            --cmd niri-session \
-            --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions:${config.services.displayManager.sessionData.desktops}/share/xsessions
-        '';
+        # 注意：greetd 的 TOML 解析器无法处理多行三引号字符串（会报
+        # "expected equals sign on line"，导致开机卡在 graphical.target），
+        # 因此 command 必须拼成单行。
+        command = lib.concatStringsSep " " [
+          "${pkgs.tuigreet}/bin/tuigreet"
+          "--time"
+          "--remember"
+          "--cmd niri-session"
+          "--sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions:${config.services.displayManager.sessionData.desktops}/share/xsessions"
+        ];
         user = "s"; # 登录用户
       };
     };
