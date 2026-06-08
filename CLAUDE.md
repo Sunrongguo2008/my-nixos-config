@@ -24,8 +24,8 @@ sudo nixos-rebuild test --flake /home/s/nixos#my-nixos
 nix flake update --flake /home/s/nixos
 nix flake lock --update-input <input-name>   # 仅更新某一项
 
-# 查看本次会拉哪些包
-nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
+# 查看本次会拉哪些包（本机为 ng 版 nixos-rebuild，用 dry-build 子命令，没有 --dry-run 旗标）
+nixos-rebuild dry-build --flake /home/s/nixos#my-nixos
 ```
 
 垃圾回收已配置为每周自动执行（保留 7 天）。手动清理：`sudo nh clean all` 或 `nix-collect-garbage -d`。
@@ -46,7 +46,7 @@ nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
 - `s-base.nix` — 启动（GRUB + zen 内核）、Nix 设置（flakes、GC、国内镜像 substituters、cachy/garnix/noctalia 公钥）、网络、locale、btrfs autoScrub、`home-manager.backupCommand`（生成带时间戳的备份避免 `.bak` 冲突）
 - `s-hardware.nix` — `nixos-generate-config` 生成的硬件配置
 - `s-desktop.nix` — Wayland 合成器（Hyprland + Niri + Mango）、字体、Fcitx5、greetd/tuigreet、XDG portal、Qt 主题
-- `s-service.nix` — 用户 `s`（已硬编码 `hashedPassword`）、PipeWire、CUPS（声明式 HP M126a 打印机）、libvirtd/Docker/VMware、SSH、Steam、Mihomo（TUN 模式代理）、hermes-agent
+- `s-service.nix` — 用户 `s`（已硬编码 `hashedPassword`）、PipeWire、CUPS（声明式 HP M126a 打印机）、libvirtd/Docker/VMware、SSH、Steam、Mihomo（TUN 模式代理）
 - `s-packages.nix` — 系统级软件包；内含 **`fastOptimizedStdenv`**（clang + LLD + `-O3 -flto=thin -march=native`），用于重新构建 `quickshell`、`mango`、`fastfetch` 等运行时敏感的包
 - `h-core.nix` — 用户基本信息、shell（bash 自动 exec 到 fish）、Mango 配置变更监听 + 自动 `mmsg -d reload_config`、大量 `mkOutOfStoreSymlink` 把 `~/.config/*` 链接到 `conf/`
 - `h-interface.nix` — GTK/Qt 主题、光标、VSCode（强制 Wayland）、`gtk3-theme-sync` 服务监听 `org.gnome.desktop.interface color-scheme` 并切换 `adw-gtk3` ↔ `adw-gtk3-dark`
@@ -54,7 +54,7 @@ nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
 
 ### 配置文件软链机制（重要）
 
-`conf/` 目录下的文件（`niri.kdl`、`starship.toml`、`fish.fish`、`kitty.conf`、`gitconfig`、`kdeglobals`、`mimeapps.list`、`hermes-agent.yaml`、`mihomo.yaml` 等）通过 `mkOutOfStoreSymlink` 链接到 `~/.config/...`（`gitconfig` 链到 `~/.gitconfig`）。这意味着：
+`conf/` 目录下的文件（`niri.kdl`、`starship.toml`、`fish.fish`、`kitty.conf`、`gitconfig`、`kdeglobals`、`mimeapps.list`、`mihomo.yaml` 等）通过 `mkOutOfStoreSymlink` 链接到 `~/.config/...`（`gitconfig` 链到 `~/.gitconfig`）。这意味着：
 
 - **直接编辑 `conf/` 中的文件会立刻生效**，无需 `nixos-rebuild`。
 - 但 `mihomo.yaml` 例外：它通过 `environment.etc."mihomo/config.yaml".source` 引用，是系统层 store 路径，**改完必须 rebuild + `sudo systemctl restart mihomo.service`**。rebuild 只换 store path 下的源文件，但 mihomo unit 定义本身没变 → systemd 不会自动重启它；且 mihomo 用 `LoadCredential=` 在启动时把 config 内容快照进 `/run/credentials/mihomo.service/`，不重启就吃不到新内容。
@@ -63,11 +63,11 @@ nixos-rebuild build --flake /home/s/nixos#my-nixos --dry-run
 
 ### Flake inputs 注意点
 
-- 同时使用 `nixos-unstable` 与 `nixos-25.11` 稳定通道（`pkgs-stable` 通过 `specialArgs` 传递，但当前仅 `configuration.nix` 函数签名包含，未实际使用稳定包时无影响）。
+- 全仓库只用单一 `nixpkgs`（`nixos-unstable`）；`home-manager` 取 `master` 分支并 `follows = "nixpkgs"`，即复用同一份 unstable 包集，不存在第二份 nixpkgs。`specialArgs` 与 `home-manager.extraSpecialArgs` 都只传 `inputs`，没有 `pkgs-stable`，`configuration.nix` 签名也只有 `{ config, lib, pkgs, inputs, ... }`。
+- home-manager `master` 的 release 号常领先 nixpkgs `unstable`，错位窗口里 rebuild 会触发 `home.enableNixpkgsReleaseCheck` 的版本不匹配警告（如曾出现 HM 26.11 vs nixpkgs 26.05）——通常无害，必要时在 HM 配置里设 `home.enableNixpkgsReleaseCheck = false;` 静音。
 - `nix-cachyos-kernel.overlays.pinned` 用于钉死内核版本，避免 patch 不匹配；当前实际使用 `linuxPackages_zen`（s-base.nix 中切换）。
 - 对 `pkgsi686Linux.openldap` 关闭了 `doCheck`，因为 Lutris 多架构会拉 i686 openldap 触发 flaky 测试 `test017-syncreplication-refresh`；改动隔离在 i686，不影响 x86_64 缓存命中。
-- `hermes-agent` 模块通过 `~/.hermes/config.yaml` 和 `~/.hermes/.env` 软链运行，**不要**在 `services.hermes-agent.settings` / `configFile` / `environmentFiles` 里设值，会破坏默认加载路径。
-- `hermes-agent.env`、`hermes-agent.yaml` 与 `conf/mango/noctalia.conf` 在 `.gitignore` 中（密钥/本机派生内容）。`hermes-agent.yaml` 之所以 untrack：hermes 启动时会原地把 `auth.json` 里的 API key 写进 `custom_providers[*].api_key`，通过 mkOutOfStoreSymlink 直接落到这个文件——如果 tracked 会随 `git commit -a` 把密钥推到 origin（已经发生过一次事故）。
+- `conf/mango/noctalia.conf` 在 `.gitignore` 中（本机派生内容）。
 
 ## 编辑约定
 
