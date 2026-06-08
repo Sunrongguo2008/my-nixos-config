@@ -1,0 +1,22 @@
+{
+  "env": {
+      "ANTHROPIC_BASE_URL": "https://muyuan.do",
+      "ANTHROPIC_AUTH_TOKEN": "sk-qJnIQjZPqZSVXM4kdxxWgL7oLkWvobo8I1sQCCwg7VHVzT2k"
+      },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "worktree": {
+    "baseRef": "fresh"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
+  },
+  "language": "Chinese",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "editorMode": "normal"
+}

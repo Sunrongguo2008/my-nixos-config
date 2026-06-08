@@ -1,6 +1,6 @@
 # Home 核心配置模块
 # 包含用户信息、Shell、服务与配置文件链接
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   conf-dir = "${config.home.homeDirectory}/nixos/conf";
@@ -137,15 +137,25 @@ in
       "${conf-dir}/gitconfig";
   };
 
-    home.file.".hermes/config.yaml" = {
+  # Claude Code 全局设置（settings.local.json 留给本机私有权限，不软链）
+  home.file.".claude/settings.json" = {
     force = true;
     source = config.lib.file.mkOutOfStoreSymlink
-      "${conf-dir}/hermes-agent.yaml";
-    };
+      "${conf-dir}/claude/claude-settings.json";
+  };
 
-    home.file.".hermes/.env" = {
+  # Claude Code 状态栏脚本（被 settings.json 的 statusLine.command 引用）
+  home.file.".claude/statusline.sh" = {
     force = true;
     source = config.lib.file.mkOutOfStoreSymlink
-      "${conf-dir}/hermes-agent.env";
-    };
+      "${conf-dir}/claude/claude-statusline.sh";
+  };
+
+  # OpenCode 全局配置
+  home.file.".config/opencode/opencode.jsonc" = {
+    force = true;
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${conf-dir}/opencode.jsonc";
+  };
+
 }
