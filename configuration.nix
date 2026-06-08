@@ -9,10 +9,10 @@
 
     # 硬件配置（由 nixos-generate-config 生成）
     ./mod/s-hardware.nix
-    
+
     # 系统界面配置
     ./mod/s-desktop.nix
-    
+
     # 服务和用户配置
     ./mod/s-service.nix
 
@@ -21,6 +21,9 @@
 
     # kmscon（仅 tty5 / tty6）
     ./mod/s-kmscon.nix
+
+    # Claude API 故障转移代理
+    ./mod/s-claude-proxy.nix
   ];
 
   # 请注意：所有配置项已分离到各自的模块文件中
